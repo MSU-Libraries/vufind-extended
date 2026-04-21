@@ -1,0 +1,47 @@
+stages:
+  - Lint
+  - Build
+
+.build_template:
+  stage: Build
+  tags:
+    - msul-shared
+  variables:
+    VUFIND_VERSION: "11.0.1"
+  before_script:
+    - >
+      docker login -u $CI_REGISTRY_USER
+      -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - >
+      docker build
+      --build-arg VUFIND_VERSION="${VUFIND_VERSION}"
+      --tag "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}"
+      --cache-from "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}"
+      .
+    - |
+      if [[ ${CI_DEFAULT_BRANCH} == "${CI_COMMIT_BRANCH}" ]]; then
+        docker push "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}";
+      fi;
+
+Build v11.0.1:
+  extends: .build_template
+
+Build v11.0.2:
+  extends: .build_template
+  variables:
+    VUFIND_VERSION: "11.0.2"
+
+hadolint:
+  stage: Lint
+  allow_failure: true
+  tags:
+    - msul-shared
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      changes:
+        - 'Dockerfile'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+  image: registry.gitlab.com/pipeline-components/hadolint:latest
+  script:
+    - hadolint Dockerfile
