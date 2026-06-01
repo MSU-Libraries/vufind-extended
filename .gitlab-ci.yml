@@ -123,3 +123,8 @@ DockerHub Release v11.0.2:
   extends: .dockerhub_release
   variables:
     VUFIND_VERSION: "11.0.2"
+
+DockerHub Release v11.0.4:
+  extends: .dockerhub_release
+  variables:
+    VUFIND_VERSION: "11.0.4"
