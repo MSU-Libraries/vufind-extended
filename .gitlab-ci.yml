@@ -33,6 +33,11 @@ Build v11.0.2:
   variables:
     VUFIND_VERSION: "11.0.2"
 
+Build v11.0.4:
+  extends: .build_template
+  variables:
+    VUFIND_VERSION: "11.0.4"
+
 hadolint:
   stage: Lint
   allow_failure: true
