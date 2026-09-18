@@ -90,7 +90,7 @@ GitHub Release:
     - apk add git curl
   script:
     - rm -rf vufind-extended.git
-    - git clone --mirror https://RW_CICD_TOKEN:$RW_CICD_TOKEN@gitlab.msu.edu/msu-libraries/catalog/vufind-extended.git
+    - git clone --mirror https://RW_CICD_TOKEN:$RW_CICD_TOKEN@www.gitlab.msu.edu/msu-libraries/catalog/vufind-extended.git
     - cd vufind-extended.git
     - git push --force --mirror https://$GITHUB_USER_TOKEN@github.com/MSU-Libraries/vufind-extended.git
     - echo "{\"tag_name\":\"${TAG}\", \"target_commitish\":\"${CI_COMMIT_SHA}\"}" > data.json
