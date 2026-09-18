@@ -38,6 +38,11 @@ Build v11.0.4:
   variables:
     VUFIND_VERSION: "11.0.4"
 
+Build v11.1.0:
+  extends: .build_template
+  variables:
+    VUFIND_VERSION: "11.1.0"
+
 hadolint:
   stage: Lint
   allow_failure: true
@@ -128,3 +133,8 @@ DockerHub Release v11.0.4:
   extends: .dockerhub_release
   variables:
     VUFIND_VERSION: "11.0.4"
+
+DockerHub Release v11.1.0:
+  extends: .dockerhub_release
+  variables:
+    VUFIND_VERSION: "11.1.0"
