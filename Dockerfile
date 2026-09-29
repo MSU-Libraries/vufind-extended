@@ -5,7 +5,8 @@ ENV TZ=America/Detroit \
     VUFIND_LOCAL_DIR=/usr/local/vufind/local \
     VUFIND_HOME=/usr/local/vufind \
     JAVA_HOME=/usr/lib/jvm/default-java \
-    VUFIND_CACHE_DIR=/mnt/vufind_cache
+    VUFIND_CACHE_DIR=/mnt/vufind_cache \
+    NODE_VERSION=22.x
 
 # TEMP(PART1):
 # - Patch and replace solrmarc due to delete logic hardcode to MARC 001 as id instead of .properties defined id
@@ -16,13 +17,16 @@ RUN \
     apt-get update && \
     apt-get install -y wget vim-nox lsof apache2 xml-twig-tools curl cron rsyslog jq htop moreutils \
         gettext-base locales msmtp-mta rsync screen libxml-xpath-perl xmlstarlet php-xdebug \
-        nodejs npm git pigz libxml2-utils libmarc-xml-perl bash-completion gawk \
+        git pigz libxml2-utils libmarc-xml-perl bash-completion gawk \
         # VuFind dependencies; modified to not include php-dev, mysql-server, or Java JDK (using JRE instead) \
         # We can switch back to default-jre-headless (openjdk-21-jre-headless) instead of openjdk-17-jre-headless \
         # when we remove the patches for marc4j & solrmarc
         mysql-client openjdk-17-jre-headless apache2 libapache2-mod-php php-pear php \
         php-curl php-gd php-intl php-json php-ldap php-mbstring php-mysql php-soap php-xml \
         libapache2-mod-security2 modsecurity-crs uuid-runtime libsaxonhe-java && \
+    # Install node and npm
+    curl -fsSL "https://deb.nodesource.com/setup_${NODE_VERSION}" | bash - && \
+    apt-get install -y nodejs && \
     # We can remove the following line when switching back to default-jre-headless
     cd /usr/lib/jvm && ln -s java-17-openjdk-amd64 default-java && \
     # TEMP(PART2):
