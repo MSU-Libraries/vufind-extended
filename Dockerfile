@@ -17,7 +17,7 @@ RUN \
     apt-get update && \
     apt-get install -y wget vim-nox lsof apache2 xml-twig-tools curl cron rsyslog jq htop moreutils \
         gettext-base locales msmtp-mta rsync screen libxml-xpath-perl xmlstarlet php-xdebug \
-        git pigz libxml2-utils libmarc-xml-perl bash-completion gawk \
+        g++ git pigz libxml2-utils libmarc-xml-perl bash-completion gawk \
         # VuFind dependencies; modified to not include php-dev, mysql-server, or Java JDK (using JRE instead) \
         # We can switch back to default-jre-headless (openjdk-21-jre-headless) instead of openjdk-17-jre-headless \
         # when we remove the patches for marc4j & solrmarc
