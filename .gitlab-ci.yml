@@ -25,14 +25,6 @@ stages:
         docker push "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}";
       fi;
 
-Build v11.0.1:
-  extends: .build_template
-
-Build v11.0.2:
-  extends: .build_template
-  variables:
-    VUFIND_VERSION: "11.0.2"
-
 Build v11.0.4:
   extends: .build_template
   variables:
@@ -120,14 +112,6 @@ GitHub Release:
     - docker pull "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}"
     - docker tag "${CI_REGISTRY_IMAGE}":"${VUFIND_VERSION}" msulibraries/vufind-extended:"${VUFIND_VERSION}"
     - docker push msulibraries/vufind-extended:"${VUFIND_VERSION}"
-
-DockerHub Release v11.0.1:
-  extends: .dockerhub_release
-
-DockerHub Release v11.0.2:
-  extends: .dockerhub_release
-  variables:
-    VUFIND_VERSION: "11.0.2"
 
 DockerHub Release v11.0.4:
   extends: .dockerhub_release
