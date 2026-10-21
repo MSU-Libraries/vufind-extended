@@ -15,15 +15,22 @@ COPY patches/ /tmp/patches/
 RUN \
     # Perform updates
     apt-get update && \
+    apt-get install -y --no-install-recommends software-properties-common gpg-agent && \
+    # Add PPA for the latest PHP release
+    add-apt-repository -y ppa:ondrej/php && \
+    apt-get update && \
+    # Install updated packages along with PHP extensions
+    #     VuFind dependencies; modified to not include php-dev, mysql-server, or Java JDK (using JRE instead) \
+    #     We can switch back to default-jre-headless (openjdk-21-jre-headless) instead of openjdk-17-jre-headless \
+    #     when we remove the patches for marc4j & solrmarc
     apt-get install -y wget vim-nox lsof apache2 xml-twig-tools curl cron rsyslog jq htop moreutils \
-        gettext-base locales msmtp-mta rsync screen libxml-xpath-perl xmlstarlet php-xdebug \
+        gettext-base locales msmtp-mta rsync screen libxml-xpath-perl xmlstarlet \
         g++ git pigz libxml2-utils libmarc-xml-perl bash-completion gawk \
-        # VuFind dependencies; modified to not include php-dev, mysql-server, or Java JDK (using JRE instead) \
-        # We can switch back to default-jre-headless (openjdk-21-jre-headless) instead of openjdk-17-jre-headless \
-        # when we remove the patches for marc4j & solrmarc
-        mysql-client openjdk-17-jre-headless apache2 libapache2-mod-php php-pear php \
-        php-curl php-gd php-intl php-json php-ldap php-mbstring php-mysql php-soap php-xml \
-        libapache2-mod-security2 modsecurity-crs uuid-runtime libsaxonhe-java && \
+        mysql-client openjdk-17-jre-headless libapache2-mod-security2 modsecurity-crs uuid-runtime libsaxonhe-java \
+        # Latest PHP core & Apache module
+        php8.5 libapache2-mod-php8.5 php8.5-xdebug php-pear \
+        # PHP Extensions
+        php8.5-curl php8.5-gd php8.5-intl php8.5-mbstring php8.5-mysql php8.5-soap php8.5-xml php8.5-ldap && \
     # Install node and npm
     curl -fsSL "https://deb.nodesource.com/setup_${NODE_VERSION}" | bash - && \
     apt-get install -y nodejs && \
